@@ -1,10 +1,4 @@
 # Rock, Paper, Scissors
-
-You tried in the JavaScript workshop, but you were missing one crucial element: *callbacks*.
-
-Take a look at this:
-
-```js
 const readline = require('readline');
 
 const reader = readline.createInterface({
@@ -12,32 +6,55 @@ const reader = readline.createInterface({
   output: process.stdout
 });
 
-reader.question(`sup? \n`, (res) => {
-  console.log(`you replied: ${res}`)
+const cpu = () => {
+let comp = Math.random();
+  if (comp >= 0.0 && comp <= 0.33){
+    return "r"
+  } else if (comp >= 0.34 && comp <= 0.66) {
+    return "p"
+  } else if (comp >= 0.67 && comp <= 1) {
+    return "s"
+  }
+}
+
+const game = (res, comp) => {
+  if( (res === "r" && comp === "s") || (res === "s" && comp === "p") || (res === "p" && comp === "r")) {
+    return `Congratulations! You win!`
+  } else if ( (res === "r" && comp === "p") || (res === "p" && comp === "s") || (res === "s" && comp === "r")) {
+    return `You lost. Try again!`
+  } else if ((res === "r" && comp === "r") || (res === "p" && comp === "p") || (res === "s" && comp === "s")) {
+    return `We tied!`
+  }
+};
+
+// let gamePossibilities = {
+//   win: [['r', 's'], ['p', 'r']]
+// }
+//
+// if (gamePossibilities.win.includes([userChoice, computerChoice])) {
+//   // print you win
+// }
+
+reader.question(`Welcome to rock, paper, scissors! \n Please type 'r', 'p', or 's' to make a choice. \n`, (res) => {
+  // console.log(`you chose: ${res}`)
+  let cpuChoice = cpu()
+  console.log(`You chose ${res}. Hmm...`)
+  setTimeout (() => {
+    console.log(`The computer chose: ${cpuChoice}.`)
+    console.log(game(res, cpuChoice));
+  }, 5000);
+  reader.close();
 });
-```
 
-`readline` is what's known as a *library*. Don't worry about what that is, precisely, yet - just know that, like class methods, it's something that Node makes available to us to use how we'd like.
+// code syntax = order of code (what goes where?)
+//1. console greeting ("wel..come")
+//2. space for user's choice [reader.prompt]?
+//3. set time out (~5 seconds)
+//4. use math.random to display comp choice
+//5. use conditional to compare user n comp choices
+//6. return win, loss or tie result
+//7.
 
-You can see here that we're using callbacks to *await a user's response*. The first argument of `question` prints to the console to ask a question, and the second is a callback which handles what our user might say. Once we have that response, our callback fires and we tell them what they wrote.
-
-Using this library, we are going to make a rock, paper, scissors game against the computer. Our finished product should converse something like this:
-
-```
-Console: `Welcome to rock, paper, scissors. Please type 'r', 'p', or 's' to make a choice.`
-User: `rock`
-Console: `You chose 'rock'. Hmm...` (setTimeout for 5 seconds here to imagine the computer thinking)
-Console: `The computer chose 'scissors'.`
-Console: `Congratulations! You win!`
-```
-
-...And then the program exits.
-
-A few notes here:
-
-* Use the full extent of the [readline library](https://node.readthedocs.io/en/latest/api/readline/) to flesh out your program's functionality.
-* The computer should make a random choice (`Math.random` might be useful here) to come up with their play.
-* You should handle wins, losses, and ties.
 
 ## Bonus
 
